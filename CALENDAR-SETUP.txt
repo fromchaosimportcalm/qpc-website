@@ -1,0 +1,61 @@
+# QPC Calendar — Cloudflare Worker Setup
+# Takes about 10 minutes. Free tier is more than sufficient.
+
+## Step 1 — Create a Cloudflare account
+Go to cloudflare.com and sign up for a free account if you don't already have one.
+
+## Step 2 — Create the Worker
+1. Log in to the Cloudflare dashboard (dash.cloudflare.com)
+2. In the left sidebar click "Workers & Pages"
+3. Click "Create" → "Create Worker"
+4. Give it a name: qpc-calendar-proxy
+5. Click "Deploy" (ignore the default hello-world code for now)
+
+## Step 3 — Paste the Worker code
+1. Click "Edit Code" on the Worker you just created
+2. Delete all the existing code
+3. Paste the entire contents of qpc-calendar-worker.js
+4. Click "Deploy"
+
+## Step 4 — Get your Worker URL
+Your Worker URL will be shown at the top of the page:
+  https://qpc-calendar-proxy.YOUR-SUBDOMAIN.workers.dev
+
+Copy this URL.
+
+## Step 5 — Update calendar.html
+Open calendar.html and find this line near the top of the <script> block:
+
+  const PROXY_URL = 'https://qpc-calendar-proxy.YOUR-SUBDOMAIN.workers.dev';
+
+Replace YOUR-SUBDOMAIN with your actual Cloudflare subdomain.
+Save the file. The calendar will now load live events.
+
+## Step 6 — Test it
+Open calendar.html in a browser.
+The month grid and upcoming events sidebar should populate with events from the pastor's calendar.
+
+---
+
+## Updating the calendar feed in future
+If the pastor ever changes the webcal link, you only need to update one line
+in qpc-calendar-worker.js:
+
+  const ICS_URL = 'https://p69-caldav.icloud.com/...'
+
+Change the URL and redeploy the Worker. No changes needed to calendar.html.
+
+---
+
+## Troubleshooting
+- Calendar shows error: check the Worker is deployed and the PROXY_URL is correct
+- Events not appearing: the iCloud URL uses https://, not webcal:// — the Worker handles this
+- Recurring events missing: the parser handles RRULE for daily/weekly/monthly/yearly repeats
+- Worker logs: Cloudflare dashboard → Workers & Pages → your Worker → Logs tab
+
+---
+
+## When you move to Astro
+The Worker stays exactly as-is. In Astro you'd fetch the proxy URL at build time
+using fetch() in your getStaticProps or server endpoint, which caches cleanly.
+The calendar.html JavaScript logic can be ported to an Astro component directly.
