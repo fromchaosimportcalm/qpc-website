@@ -12,3 +12,4 @@ Thumbs.db
 *.xml
 *.xcf
 *.code-workspace
+.vscode/
