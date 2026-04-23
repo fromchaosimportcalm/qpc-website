@@ -891,11 +891,14 @@
 
     <script>
       // ─── CONFIGURATION ────────────────────────────────────────────────────────────
-      // Set this to where your MP3s are hosted.
-      // Cloudflare R2 example: 'https://pub-YOURKEY.r2.dev/hymns/'
-      // Local (same folder):   'hymns/'
       const AUDIO_BASE_URL =
         "https://pub-b35d5e363bc845b3949a0c406b4aad7f.r2.dev/";
+
+      // ─── KEY FORMATTING ───────────────────────────────────────────────────────────
+      function formatKey(raw) {
+        if (!raw) return "";
+        return raw.replace(/b(?=[A-Z\/\s]|$)/g, "♭").replace(/#/g, "♯");
+      }
 
       // ─── STATE ────────────────────────────────────────────────────────────────────
       let ALL_HYMNS = [];
@@ -926,7 +929,6 @@
 
       // ─── CONTROLS ────────────────────────────────────────────────────────────────
       function buildControls(hymns) {
-        // A–Z
         const letters = [
           ...new Set(
             hymns.map((h) => {
@@ -935,7 +937,6 @@
             }),
           ),
         ].sort();
-
         const azRow = document.querySelector(".az-row");
         letters.forEach((letter) => {
           const btn = document.createElement("button");
@@ -945,12 +946,10 @@
           btn.addEventListener("click", () => setLetter(letter));
           azRow.appendChild(btn);
         });
-
         document
           .querySelector('.az-btn[data-letter="all"]')
           .addEventListener("click", () => setLetter("all"));
 
-        // Tags
         const allTags = [...new Set(hymns.flatMap((h) => h.tags))].sort();
         const tagRow = document.getElementById("tagRow");
         allTags.forEach((tag) => {
@@ -1016,20 +1015,17 @@
         const list = document.getElementById("hymnList");
         document.getElementById("resultCount").textContent =
           hymns.length + " hymn" + (hymns.length !== 1 ? "s" : "");
-
         if (hymns.length === 0) {
           list.innerHTML =
             '<div class="no-results">No hymns match your search.</div>';
           return;
         }
-
         const groups = {};
         hymns.forEach((h) => {
           const t = h.title.toLowerCase().replace(/^(the |a |an |o )/, "");
           const letter = t[0].toUpperCase();
           (groups[letter] = groups[letter] || []).push(h);
         });
-
         list.innerHTML = "";
         Object.keys(groups)
           .sort()
@@ -1046,9 +1042,6 @@
       }
 
       // ─── CARD ─────────────────────────────────────────────────────────────────────
-      function formatKey(key) {
-        return key.replace(/b/g, "♭").replace(/#/g, "♯");
-      }
       function buildCard(h) {
         const card = document.createElement("div");
         card.className = "hymn-card" + (h.audio ? "" : " no-audio");
@@ -1057,12 +1050,10 @@
         if (h.composer) metaParts.push(h.composer);
         if (h.year) metaParts.push(h.year);
         if (h.key) metaParts.push("Key: " + formatKey(h.key));
-        // if (h.key) metaParts.push("Key: " + h.key);
 
         const tagsHtml = h.tags
           .map((t) => `<span class="hymn-tag">${t}</span>`)
           .join("");
-
         const audioUrl = h.audio
           ? AUDIO_BASE_URL + encodeURIComponent(h.audio)
           : null;
@@ -1075,9 +1066,9 @@
         ${tagsHtml ? `<div class="hymn-tags">${tagsHtml}</div>` : ""}
       </div>
       <div class="hymn-actions">
-        <button class="btn-play" ${!audioUrl ? "disabled" : ""} data-slug="${h.slug}">&#9654; Play</button>
+        <button class="btn-play" ${!audioUrl ? "disabled" : ""} data-slug="${h.slug}">▶ Play</button>
         ${h.verses.length ? `<button class="btn-lyrics" data-slug="${h.slug}">Lyrics</button>` : ""}
-        ${audioUrl ? `<a class="btn-download" href="${audioUrl}" download title="Download MP3">&#8595; MP3</a>` : ""}
+        ${audioUrl ? `<a class="btn-download" href="${audioUrl}" download title="Download MP3">↓ MP3</a>` : ""}
       </div>
     </div>
     <div class="hymn-player" id="player-${h.slug}">
@@ -1108,9 +1099,7 @@
             const playerEl = document.getElementById("player-" + h.slug);
             const audio = playerEl.querySelector("audio");
             const isOpen = playerEl.classList.contains("open");
-
             if (!isOpen) {
-              // Close others
               openPlayers.forEach((slug) => {
                 if (slug !== h.slug) {
                   document
@@ -1121,19 +1110,19 @@
                     ?.querySelector("audio")
                     ?.pause();
                   const b = document.querySelector(
-                    `.btn-play[data-slug="${slug}"]`,
+                    '.btn-play[data-slug="' + slug + '"]',
                   );
-                  if (b) b.innerHTML = "&#9654; Play";
+                  if (b) b.innerHTML = "▶ Play";
                 }
               });
               openPlayers.clear();
               playerEl.classList.add("open");
-              playBtn.innerHTML = "&#9646;&#9646; Stop";
+              playBtn.innerHTML = "▮▮ Stop";
               openPlayers.add(h.slug);
               audio?.play();
             } else {
               playerEl.classList.remove("open");
-              playBtn.innerHTML = "&#9654; Play";
+              playBtn.innerHTML = "▶ Play";
               openPlayers.delete(h.slug);
               audio?.pause();
             }
