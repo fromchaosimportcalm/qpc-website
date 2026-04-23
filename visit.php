@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Your Visit — Queanbeyan Presbyterian Church</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F5F0E8; --cream-dark: #EDE7D6; --ink: #1C1A16;
+  --forest: #2D4A35; --forest-light: #3D6147;
+  --gold: #B8862A; --gold-light: #D4A445;
+  --warm-grey: #8A8278; --border: rgba(44,74,53,0.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--ink);font-family:'Crimson Pro',Georgia,serif;font-size:18px;line-height:1.7;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;background:rgba(245,240,232,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);}
+.nav-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;}
+.nav-logo-img{height:48px;width:auto;display:block;}
+.nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center;}
+.nav-links a{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink);text-decoration:none;opacity:0.7;transition:opacity 0.2s,color 0.2s;}
+.nav-links a:hover,.nav-links a.active{opacity:1;color:var(--forest);}
+.nav-cta{color:var(--cream)!important;background:var(--forest);padding:0.6rem 1.4rem;border-radius:2px;opacity:1!important;}
+.nav-cta:hover{background:var(--forest-light)!important;}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;z-index:200;}
+.nav-hamburger span{display:block;width:24px;height:2px;background:var(--forest);border-radius:2px;transition:transform 0.3s,opacity 0.3s;transform-origin:center;}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-hamburger.open span:nth-child(2){opacity:0;}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.nav-overlay{position:fixed;inset:0;background:rgba(28,26,22,0.4);z-index:140;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.nav-overlay.open{opacity:1;pointer-events:all;}
+
+/* SHARED TYPOGRAPHY */
+.section-label{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;}
+.section-label::before{content:'';display:block;width:1.5rem;height:1px;background:var(--gold);}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:600;line-height:1.15;color:var(--forest);letter-spacing:-0.01em;}
+.btn-primary{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;background:var(--forest);color:var(--cream);padding:1rem 2.2rem;text-decoration:none;border-radius:2px;transition:background 0.2s,transform 0.15s;display:inline-block;}
+.btn-primary:hover{background:var(--forest-light);transform:translateY(-1px);}
+.btn-secondary{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;background:transparent;color:var(--forest);border:1px solid var(--forest);padding:1rem 2.2rem;text-decoration:none;border-radius:2px;transition:background 0.2s,color 0.2s;display:inline-block;}
+.btn-secondary:hover{background:var(--forest);color:var(--cream);}
+
+/* PAGE HEADER */
+.page-header{padding:9rem 5rem 5rem;background:var(--forest);position:relative;overflow:hidden;}
+.page-header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:60px;background:var(--cream);clip-path:ellipse(55% 100% at 50% 100%);}
+.page-header-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:end;}
+.page-eyebrow{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-light);margin-bottom:1rem;display:flex;align-items:center;gap:0.8rem;}
+.page-eyebrow::before{content:'';display:block;width:2rem;height:1px;background:var(--gold);}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:600;color:var(--cream);line-height:1.1;margin-bottom:1rem;}
+.page-lead{font-size:1.1rem;color:rgba(245,240,232,0.7);line-height:1.75;max-width:44ch;}
+.header-service-times{display:flex;flex-direction:column;gap:0.8rem;}
+.service-pill{display:flex;align-items:center;gap:1.2rem;background:rgba(245,240,232,0.08);border:1px solid rgba(245,240,232,0.15);border-radius:2px;padding:1.2rem 1.8rem;transition:background 0.2s;}
+.service-pill:hover{background:rgba(245,240,232,0.12);}
+.service-pill-time{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:600;color:var(--cream);line-height:1;}
+.service-pill-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.5);margin-top:0.2rem;}
+.service-pill-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+
+/* REASSURANCE STRIP */
+.reassurance{padding:5rem;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--border);}
+.reassurance-item{padding:2.5rem 2rem;border-right:1px solid var(--border);transition:background 0.2s;}
+.reassurance-item:last-child{border-right:none;}
+.reassurance-item:hover{background:var(--cream-dark);}
+.reassurance-icon{font-size:1.8rem;margin-bottom:1rem;display:block;}
+.reassurance-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--forest);margin-bottom:0.5rem;font-style:italic;}
+.reassurance-text{font-size:0.9rem;color:var(--warm-grey);line-height:1.6;}
+
+/* WHAT TO EXPECT */
+.expect-section{background:var(--cream-dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem;}
+.expect-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1.6fr;gap:6rem;align-items:start;}
+.expect-steps{display:flex;flex-direction:column;gap:0;margin-top:2rem;}
+.expect-step{display:grid;grid-template-columns:48px 1fr;gap:1.5rem;padding:2rem 0;border-bottom:1px solid var(--border);align-items:start;}
+.expect-step:last-child{border-bottom:none;}
+.step-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:rgba(45,74,53,0.15);line-height:1;padding-top:0.1rem;}
+.step-body{}
+.step-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--forest);margin-bottom:0.4rem;}
+.step-text{font-size:0.92rem;color:var(--warm-grey);line-height:1.65;}
+.expect-aside{display:flex;flex-direction:column;gap:1.5rem;}
+.aside-block{background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:2rem 2.2rem;transition:border-color 0.2s;}
+.aside-block:hover{border-color:var(--forest);}
+.aside-block-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;}
+.aside-block-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:600;color:var(--forest);margin-bottom:0.5rem;}
+.aside-block-text{font-size:0.92rem;color:var(--warm-grey);line-height:1.65;}
+
+/* MAP & ADDRESS */
+.location-section{padding:5rem;max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1.4fr;gap:5rem;align-items:start;}
+.location-details{}
+.location-details .section-title{margin-bottom:1.5rem;}
+.location-block{display:flex;gap:1.2rem;align-items:flex-start;margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);}
+.location-block:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.location-block-icon{font-size:1.2rem;width:2rem;text-align:center;flex-shrink:0;padding-top:0.2rem;}
+.location-block-content .label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem;}
+.location-block-content p,.location-block-content a{font-size:0.97rem;color:var(--ink);line-height:1.6;text-decoration:none;}
+.location-block-content a:hover{color:var(--forest);}
+.location-block-content .sub{font-size:0.85rem;color:var(--warm-grey);margin-top:0.2rem;}
+.map-embed{border-radius:2px;overflow:hidden;border:1px solid var(--border);}
+.map-embed iframe{display:block;width:100%;height:420px;border:none;}
+
+/* FAQ */
+.faq-section{background:var(--forest);padding:5rem;}
+.faq-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 2fr;gap:6rem;align-items:start;}
+.faq-left .section-label{color:var(--gold-light);}
+.faq-left .section-label::before{background:var(--gold-light);}
+.faq-left .section-title{color:var(--cream);margin-bottom:1rem;}
+.faq-left p{font-size:1rem;color:rgba(245,240,232,0.6);line-height:1.75;margin-bottom:1.5rem;max-width:32ch;}
+.faq-list{display:flex;flex-direction:column;gap:0;}
+.faq-item{border-bottom:1px solid rgba(245,240,232,0.08);}
+.faq-item:first-child{border-top:1px solid rgba(245,240,232,0.08);}
+.faq-question{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.5rem 0;cursor:pointer;list-style:none;}
+.faq-question::-webkit-details-marker{display:none;}
+.faq-q-text{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--cream);font-style:italic;}
+.faq-icon{font-family:'DM Mono',monospace;font-size:1rem;color:var(--gold);flex-shrink:0;transition:transform 0.2s;}
+details[open] .faq-icon{transform:rotate(45deg);}
+.faq-answer{padding:0 0 1.5rem;font-size:0.95rem;color:rgba(245,240,232,0.65);line-height:1.75;max-width:60ch;}
+.faq-answer strong{color:var(--cream);font-weight:600;}
+
+/* REVIEWS */
+.reviews-section{padding:5rem;background:var(--cream-dark);border-top:1px solid var(--border);}
+.reviews-inner{max-width:1300px;margin:0 auto;}
+.reviews-header{text-align:center;margin-bottom:3rem;}
+.reviews-header .section-label{justify-content:center;}
+.reviews-header .section-label::before{display:none;}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.review-card{background:var(--cream);border:1px solid var(--border);border-radius:2px;padding:2.2rem;position:relative;}
+.review-card::before{content:'"';font-family:'Playfair Display',serif;font-size:5rem;color:rgba(45,74,53,0.06);position:absolute;top:0.5rem;left:1.2rem;line-height:1;}
+.review-stars{color:var(--gold);font-size:0.8rem;letter-spacing:0.1em;margin-bottom:1rem;}
+.review-text{font-size:0.97rem;color:var(--ink);line-height:1.7;margin-bottom:1.2rem;font-style:italic;}
+.review-source{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-grey);}
+
+/* CONTACT CTA */
+.contact-cta{padding:5rem;background:var(--ink);}
+.contact-cta-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.contact-left .section-label{color:var(--gold-light);}
+.contact-left .section-label::before{background:var(--gold-light);}
+.contact-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:600;color:var(--cream);margin-bottom:1rem;line-height:1.15;}
+.contact-left p{font-size:1rem;color:rgba(245,240,232,0.6);line-height:1.75;max-width:40ch;margin-bottom:1.5rem;}
+.contact-actions{display:flex;gap:1rem;flex-wrap:wrap;}
+.contact-actions .btn-primary{background:var(--gold);}
+.contact-actions .btn-primary:hover{background:var(--gold-light);}
+.contact-actions .btn-secondary{border-color:rgba(245,240,232,0.3);color:var(--cream);}
+.contact-actions .btn-secondary:hover{background:rgba(245,240,232,0.1);color:var(--cream);}
+.contact-right{display:flex;flex-direction:column;gap:1rem;}
+.contact-detail{display:flex;align-items:center;gap:1.2rem;padding:1.2rem 1.5rem;background:rgba(245,240,232,0.04);border:1px solid rgba(245,240,232,0.08);border-radius:2px;}
+.contact-detail-icon{font-size:1.2rem;width:2rem;text-align:center;flex-shrink:0;}
+.contact-detail-text .label{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(245,240,232,0.35);margin-bottom:0.2rem;}
+.contact-detail-text a,.contact-detail-text p{font-size:0.95rem;color:rgba(245,240,232,0.75);text-decoration:none;transition:color 0.2s;}
+.contact-detail-text a:hover{color:var(--cream);}
+
+/* SPOTIFY LINK */
+.spotify-strip{background:var(--ink);padding:3rem 5rem;}
+.spotify-strip-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:2rem;}
+.spotify-strip p{font-size:1rem;color:rgba(245,240,232,0.6);max-width:48ch;}
+.spotify-strip p strong{color:var(--cream);}
+.btn-spotify{display:inline-flex;align-items:center;gap:0.7rem;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;background:#1DB954;color:#000;padding:0.9rem 1.8rem;border-radius:2px;text-decoration:none;transition:opacity 0.2s;}
+.btn-spotify:hover{opacity:0.85;}
+.spotify-icon{width:18px;height:18px;fill:currentColor;}
+
+/* FOOTER */
+footer{background:var(--ink);color:rgba(245,240,232,0.55);padding:5rem;border-top:1px solid rgba(255,255,255,0.04);}
+.footer-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:5rem;}
+.footer-logo-img{height:80px;width:auto;display:block;filter:brightness(0) invert(1) opacity(0.6);}
+.footer-brand .sub{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin:1rem 0 0.8rem;display:block;}
+.footer-brand p{font-size:0.92rem;line-height:1.7;max-width:36ch;}
+.footer-links h4{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+.footer-links ul{list-style:none;}
+.footer-links li{margin-bottom:0.7rem;}
+.footer-links a{font-size:0.9rem;color:rgba(245,240,232,0.5);text-decoration:none;transition:color 0.2s;}
+.footer-links a:hover{color:var(--cream);}
+.footer-bottom{max-width:1300px;margin:3rem auto 0;padding-top:2rem;border-top:1px solid rgba(245,240,232,0.08);display:flex;justify-content:space-between;align-items:center;}
+.footer-bottom p{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(245,240,232,0.25);}
+.footer-social{display:flex;gap:1rem;}
+.social-link{width:2rem;height:2rem;border:1px solid rgba(245,240,232,0.1);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:rgba(245,240,232,0.4);text-decoration:none;transition:border-color 0.2s,color 0.2s;}
+.social-link:hover{border-color:var(--gold);color:var(--gold);}
+.social-link { width: 2rem; height: 2rem; border: 1px solid rgba(245, 240, 232, 0.1); border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: rgba(245, 240, 232, 0.4); text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+.social-link:hover { border-color: var(--gold); color: var(--gold); }
+.nav-overlay { position: fixed; inset: 0; background: rgba(28,26,22,0.4); z-index: 140; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.nav-overlay.open { opacity: 1; pointer-events: all; }
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  nav{padding:1.2rem 2rem;}
+  .nav-hamburger{display:flex;}
+  .nav-links{position:fixed;top:0;right:-100%;width:min(320px,85vw);height:100vh;background:var(--cream);border-left:1px solid var(--border);flex-direction:column;align-items:flex-start;justify-content:center;padding:3rem 2.5rem;gap:0;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);z-index:150;box-shadow:-8px 0 40px rgba(28,26,22,0.12);}
+  .nav-links.open{right:0;}
+  .nav-links li{width:100%;border-bottom:1px solid var(--border);}
+  .nav-links li:last-child{border-bottom:none;margin-top:1.5rem;}
+  .nav-links a{display:block;padding:1rem 0;font-size:0.8rem;opacity:1;color:var(--ink);}
+  .nav-links .nav-cta{display:inline-block;width:auto;padding:0.9rem 1.8rem;margin-top:0.5rem;}
+  .page-header{padding:8rem 2rem 4rem;}
+  .page-header-inner{grid-template-columns:1fr;gap:2.5rem;}
+  .reassurance{padding:3rem 2rem;grid-template-columns:1fr 1fr;}
+  .reassurance-item:nth-child(2){border-right:none;}
+  .reassurance-item:nth-child(3){border-top:1px solid var(--border);}
+  .expect-section{padding:3.5rem 2rem;}
+  .expect-inner{grid-template-columns:1fr;gap:3rem;}
+  .location-section{padding:3.5rem 2rem;grid-template-columns:1fr;gap:3rem;}
+  .faq-section{padding:3.5rem 2rem;}
+  .faq-inner{grid-template-columns:1fr;gap:2.5rem;}
+  .reviews-section{padding:3.5rem 2rem;}
+  .reviews-grid{grid-template-columns:1fr;}
+  .contact-cta{padding:3.5rem 2rem;}
+  .contact-cta-inner{grid-template-columns:1fr;gap:3rem;}
+  footer{padding:4rem 2rem;}
+  .footer-inner{grid-template-columns:1fr;gap:3rem;}
+  .footer-bottom{flex-direction:column;gap:1rem;text-align:center;}
+}
+@media(max-width:640px){
+  nav{padding:1rem 1.25rem;}
+  .nav-logo-img{height:36px;}
+  .page-header{padding:7rem 1.25rem 3rem;}
+  .reassurance{padding:2rem 1.25rem;grid-template-columns:1fr;}
+  .reassurance-item{border-right:none;border-bottom:1px solid var(--border);}
+  .reassurance-item:last-child{border-bottom:none;}
+  .reassurance-item:nth-child(2){border-right:none;}
+  .reassurance-item:nth-child(3){border-top:none;}
+  .expect-section,.location-section,.faq-section,.reviews-section,.contact-cta{padding:3rem 1.25rem;}
+  footer{padding:3rem 1.25rem;}
+  .contact-actions{flex-direction:column;}
+  .map-embed iframe{height:300px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<?php $activePage = 'visit'; include 'nav.php'; ?>
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="page-header-inner">
+    <div>
+      <div class="page-eyebrow">We'd love to see you</div>
+      <h1 class="page-title">Plan Your<br>Visit</h1>
+      <p class="page-lead">Walking into a church for the first time can feel like a big step. Here's everything you need to know before Sunday so you can walk in with confidence.</p>
+    </div>
+    <div>
+      <div class="page-eyebrow" style="margin-bottom:1.2rem;">Join us this Sunday</div>
+      <div class="header-service-times">
+        <div class="service-pill">
+          <div class="service-pill-dot"></div>
+          <div>
+            <div class="service-pill-time">9:00 am</div>
+            <div class="service-pill-label">Morning Service · ~60 minutes</div>
+          </div>
+        </div>
+        <div class="service-pill">
+          <div class="service-pill-dot"></div>
+          <div>
+            <div class="service-pill-time">10:45 am</div>
+            <div class="service-pill-label">Morning Service · ~60 minutes</div>
+          </div>
+        </div>
+        <div style="padding:1rem 1.8rem;background:rgba(184,134,42,0.1);border:1px solid rgba(184,134,42,0.2);border-radius:2px;margin-top:0.3rem;">
+          <p style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-light);">📍 2 Morisset Street, Queanbeyan NSW 2620</p>
+          <p style="font-size:0.88rem;color:rgba(245,240,232,0.55);margin-top:0.3rem;">Adjacent to Queanbeyan Park</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- REASSURANCE ROW -->
+<section class="reassurance">
+  <div class="reassurance-item">
+    <span class="reassurance-icon">🙏</span>
+    <div class="reassurance-title">You won't be put on the spot</div>
+    <p class="reassurance-text">No one will ask you to stand up, introduce yourself, or do anything you're not comfortable with. Come and simply observe if that's what you need.</p>
+  </div>
+  <div class="reassurance-item">
+    <span class="reassurance-icon">👔</span>
+    <div class="reassurance-title">Come as you are</div>
+    <p class="reassurance-text">There's no dress code. Some people dress up, some come casual. Wear whatever you're comfortable in; what matters is that you're there.</p>
+  </div>
+  <div class="reassurance-item">
+    <span class="reassurance-icon">👧</span>
+    <div class="reassurance-title">Kids are genuinely welcome</div>
+    <p class="reassurance-text">Children's ministry runs during both morning services. Babies and toddlers are welcome in the service too — a little noise is fine. We were all young once.</p>
+  </div>
+  <div class="reassurance-item">
+    <span class="reassurance-icon">☕</span>
+    <div class="reassurance-title">Stay for a cuppa</div>
+    <p class="reassurance-text">After each service there's morning tea. It's the best part for getting to know people. No pressure to stay, but we hope you will.</p>
+  </div>
+</section>
+
+<!-- WHAT TO EXPECT -->
+<section class="expect-section">
+  <div class="expect-inner">
+    <div>
+      <div class="section-label">Step by Step</div>
+      <h2 class="section-title">What to expect<br>on Sunday morning</h2>
+      <div class="expect-steps">
+
+        <div class="expect-step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <div class="step-title">Arrive a few minutes early</div>
+            <p class="step-text">The building is at 2 Morisset Street, set back from the road among trees adjacent to Queanbeyan Park. Aim to arrive 5–10 minutes before the service — it gives you time to find a seat and say hello to someone.</p>
+          </div>
+        </div>
+
+        <div class="expect-step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <div class="step-title">You'll be welcomed at the door</div>
+            <p class="step-text">Someone will greet you as you come in and give you a service sheet. They'll point you to seats and answer any questions. If you mention it's your first time, they'll make sure you're looked after.</p>
+          </div>
+        </div>
+
+        <div class="expect-step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <div class="step-title">The service runs about 60 minutes</div>
+            <p class="step-text">We sing together (hymns that have stood the test of time), pray, read from the Bible, and listen to an expository sermon — teaching that works through a passage of Scripture and connects it to everyday life. The sermons themselves tend to be around 20 minutes.</p>
+          </div>
+        </div>
+
+        <div class="expect-step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <div class="step-title">Kids head to their own programme</div>
+            <p class="step-text">Children are welcome to stay in the service the whole time, but there's also a children's ministry programme that runs during the sermon. A leader will guide kids out at the right moment — no need to organise anything in advance.</p>
+          </div>
+        </div>
+
+        <div class="expect-step">
+          <div class="step-num">05</div>
+          <div class="step-body">
+            <div class="step-title">Stay for morning tea</div>
+            <p class="step-text">After the service there's tea, coffee, and good conversation. It's informal and relaxed. This is where you'll meet people properly, and where someone will likely remember your name next week.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="expect-aside">
+
+      <div class="aside-block">
+        <div class="aside-block-label">Good to Know</div>
+        <div class="aside-block-title">Do I need a Bible?</div>
+        <p class="aside-block-text">No — the service sheet will include the Bible passage being preached. Bibles are available in the pews if you'd like to follow along (page numbers are referenceed during the reading). We use the NIV translation.</p>
+      </div>
+
+      <div class="aside-block">
+        <div class="aside-block-label">Good to Know</div>
+        <div class="aside-block-title">Which service should I come to?</div>
+        <p class="aside-block-text">Both services have the same format and the same sermon. Come to whichever suits your morning.</p>
+      </div>
+
+      <div class="aside-block">
+        <div class="aside-block-label">Good to Know</div>
+        <div class="aside-block-title">Will there be a collection?</div>
+        <p class="aside-block-text">There is an offering during the service. As a visitor you're under no obligation whatsoever, simply pass the plate along. Giving is for members of the congregation.</p>
+      </div>
+
+      <div class="aside-block">
+        <div class="aside-block-label">Good to Know</div>
+        <div class="aside-block-title">What if I have questions about faith?</div>
+        <p class="aside-block-text">Bring them. No question is too basic or too hard. After the service is a good time to chat with the minister or an elder... they genuinely enjoy those conversations.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION & MAP -->
+<section class="location-section">
+  <div class="location-details">
+    <div class="section-label">Getting Here</div>
+    <h2 class="section-title">Find us on<br>Sunday morning</h2>
+
+    <div style="margin-top:2rem;">
+      <div class="location-block">
+        <div class="location-block-icon">📍</div>
+        <div class="location-block-content">
+          <div class="label">Address</div>
+          <p>2 Morisset Street<br>Queanbeyan NSW 2620</p>
+          <p class="sub">Adjacent to Queanbeyan Park, nestled among mature trees</p>
+        </div>
+      </div>
+
+      <div class="location-block">
+        <div class="location-block-icon">🚗</div>
+        <div class="location-block-content">
+          <div class="label">Parking</div>
+          <p>Street parking is available on Morisset Street and the surrounding streets. Queanbeyan Park carpark (accessed from Lowe Street) is a short walk.</p>
+        </div>
+      </div>
+
+      <div class="location-block">
+        <div class="location-block-icon">🕘</div>
+        <div class="location-block-content">
+          <div class="label">Service Times</div>
+          <p>9:00 am &amp; 10:45 am — every Sunday</p>
+          <p class="sub">Both services run approximately 60 minutes, followed by morning tea</p>
+        </div>
+      </div>
+
+      <div class="location-block">
+        <div class="location-block-icon">📞</div>
+        <div class="location-block-content">
+          <div class="label">Phone</div>
+          <a href="tel:+61422715329">+61 422 715 329</a>
+        </div>
+      </div>
+
+      <div class="location-block">
+        <div class="location-block-icon">♿</div>
+        <div class="location-block-content">
+          <div class="label">Accessibility</div>
+          <p>The church building is a heritage-listed stone structure. If you have specific accessibility requirements, please contact us before your visit and we'll do our best to accommodate you.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem;">
+      <a href="https://maps.google.com/?q=2+Morisset+Street+Queanbeyan+NSW" target="_blank" rel="noopener" class="btn-secondary">Open in Google Maps ↗</a>
+    </div>
+  </div>
+
+  <div class="map-embed">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3262.18!2d149.2287!3d-35.3521!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b16df9b1b5b2961%3A0x6f30828208b6f6a0!2sQueanbeyan%20Presbyterian%20Church!5e0!3m2!1sen!2sau!4v1700000000000!5m2!1sen!2sau"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Queanbeyan Presbyterian Church location map">
+    </iframe>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="faq-left">
+      <div class="section-label">Common Questions</div>
+      <h2 class="section-title">Things people<br>wonder about</h2>
+      <p>A few questions we hear often — especially from people considering coming for the first time.</p>
+      <a href="#contact" class="btn-secondary" style="border-color:rgba(245,240,232,0.3);color:var(--cream);">Ask us something else</a>
+    </div>
+    <div class="faq-list">
+
+      <details class="faq-item">
+        <summary class="faq-question">
+          <span class="faq-q-text">Is this a church for people who already believe?</span>
+          <span class="faq-icon">+</span>
+        </summary>
+        <p class="faq-answer">Not exclusively. We have members who have followed Christ for decades, people who are exploring faith for the first time, and everyone in between. Wherever you are on that journey, you're welcome. The sermon is aimed at everyone — not just the convinced.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-question">
+          <span class="faq-q-text">What is "Presbyterian"? Is it very different from other churches?</span>
+          <span class="faq-icon">+</span>
+        </summary>
+        <p class="faq-answer">Presbyterian describes our form of church governance — led by a team of elders rather than a single pastor — and our theological tradition, which is Reformed (rooted in the Reformation and the Westminster Confession of Faith). In practice, the service is straightforward: singing, prayer, Bible reading, and a sermon. No liturgy, no ritual, nothing unfamiliar.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-question">
+          <span class="faq-q-text">I haven't been to church in years. Will that be obvious?</span>
+          <span class="faq-icon">+</span>
+        </summary>
+        <p class="faq-answer">Not at all. There's a service sheet that explains what's happening as the service proceeds. Nobody will know or care how long it's been — what matters is that you're there now.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-question">
+          <span class="faq-q-text">Do I need to be a member to take communion?</span>
+          <span class="faq-icon">+</span>
+        </summary>
+        <p class="faq-answer">Communion is for those who are baptised and professing Christians. If you're a visitor and unsure whether to participate, it's completely fine to let the elements pass — no one will think less of you. If you'd like to discuss it, the minister is happy to chat after the service.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-question">
+          <span class="faq-q-text">What about my children — can they sit with me?</span>
+          <span class="faq-icon">+</span>
+        </summary>
+        <p class="faq-answer">Absolutely. Children are welcome to stay in the service for the whole time. There's also a children's programme that runs during the sermon for kids who'd like something more age-appropriate. You choose what works for your family — and if a toddler makes noise, that's just fine.</p>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-question">
+          <span class="faq-q-text">Is there anything I need to bring or do to prepare?</span>
+          <span class="faq-icon">+</span>
+        </summary>
+        <p class="faq-answer">Nothing at all. Just show up. A curious and open mind is the only thing required. If you want to read the passage beforehand, it'll be listed on this website — but that's entirely optional.</p>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-section">
+  <div class="reviews-inner">
+    <div class="reviews-header">
+      <div class="section-label">From Our Visitors</div>
+      <h2 class="section-title" style="text-align:center;">What people say</h2>
+    </div>
+    <div class="reviews-grid">
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">The minister is young with good energy — funny but also shares meaningful messages from scripture. If you're looking for a good place to start your journey with Christ, I recommend attending here.</p>
+        <div class="review-source">Google Review · Regular Attendee</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">The sermons are well focused on the scriptures and the congregation are welcoming. Worship of God through Christ is very much at the centre of things.</p>
+        <div class="review-source">Google Review · Visitor</div>
+      </div>
+
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">Lovely warm community church — nestled in a beautiful heritage building. You feel genuinely welcomed from the moment you walk in.</p>
+        <div class="review-source">Google Review · Visitor</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT CTA -->
+<section class="contact-cta" id="contact">
+  <div class="contact-cta-inner">
+    <div class="contact-left">
+      <div class="section-label">Still Have Questions?</div>
+      <h2 class="contact-title">We'd love to<br>hear from you</h2>
+      <p>If there's anything you'd like to know before visiting — about the service, the building, parking, children's ministry, or anything else — please get in touch. There's no question too small.</p>
+      <div class="contact-actions">
+        <a href="mailto:admin@queanbeyanpc.org?subject=Website%20Enquiry&body=Hi%2C%0A%0AI%20found%20your%20details%20on%20the%20Queanbeyan%20Presbyterian%20Church%20website%20and%20would%20like%20to%20get%20in%20touch.%0A%0A" class="btn-primary">Send us a message</a>
+        <a href="https://www.facebook.com/profile.php?id=100088331591011" target="_blank" rel="noopener" class="btn-secondary">Find us on Facebook</a>
+      </div>
+    </div>
+    <div class="contact-right">
+      <div class="contact-detail">
+        <span class="contact-detail-icon">📍</span>
+        <div class="contact-detail-text">
+          <div class="label">Address</div>
+          <p>2 Morisset Street, Queanbeyan NSW 2620</p>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <span class="contact-detail-icon">📞</span>
+        <div class="contact-detail-text">
+          <div class="label">Phone</div>
+          <a href="tel:+61422715329">+61 422 715 329</a>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <span class="contact-detail-icon">🕘</span>
+        <div class="contact-detail-text">
+          <div class="label">Sundays</div>
+          <p>9:00 am &amp; 10:45 am</p>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <span class="contact-detail-icon">📖</span>
+        <div class="contact-detail-text">
+          <div class="label">This Sunday's passage</div>
+          <p style="color:rgba(245,240,232,0.4);font-style:italic;">Update each week</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPOTIFY STRIP -->
+<section class="spotify-strip">
+  <div class="spotify-strip-inner">
+    <p><strong>Subscribe to the podcast</strong> and get new sermons automatically every week — on Spotify, Apple Podcasts, or any podcast app.</p>
+    <a href="https://open.spotify.com/show/5XJPM6ftmGcBDK5yanFw9n" target="_blank" rel="noopener" class="btn-spotify">
+      <svg class="spotify-icon" viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      Listen on Spotify
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<?php include 'footer.php'; ?>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  const overlay = document.getElementById('navOverlay');
+  function openMenu(){toggle.classList.add('open');links.classList.add('open');overlay.classList.add('open');document.body.style.overflow='hidden';}
+  function closeMenu(){toggle.classList.remove('open');links.classList.remove('open');overlay.classList.remove('open');document.body.style.overflow='';}
+  toggle.addEventListener('click',()=>links.classList.contains('open')?closeMenu():openMenu());
+  
