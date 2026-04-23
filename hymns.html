@@ -1046,6 +1046,9 @@
       }
 
       // ─── CARD ─────────────────────────────────────────────────────────────────────
+      function formatKey(key) {
+        return key.replace(/b/g, "♭").replace(/#/g, "♯");
+      }
       function buildCard(h) {
         const card = document.createElement("div");
         card.className = "hymn-card" + (h.audio ? "" : " no-audio");
@@ -1053,7 +1056,8 @@
         const metaParts = [];
         if (h.composer) metaParts.push(h.composer);
         if (h.year) metaParts.push(h.year);
-        if (h.key) metaParts.push("Key: " + h.key);
+        if (h.key) metaParts.push("Key: " + formatKey(h.key));
+        // if (h.key) metaParts.push("Key: " + h.key);
 
         const tagsHtml = h.tags
           .map((t) => `<span class="hymn-tag">${t}</span>`)
