@@ -230,58 +230,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
     <span class="filter-label">Series</span>
     <div class="filter-chips" id="filterChips">
       <button class="chip active" data-series="all">All</button>
-      <button class="chip" data-series="acts">Acts</button>
-      <button class="chip" data-series="psalms">Psalms</button>
-      <button class="chip" data-series="galatians">Galatians</button>
-      <button class="chip" data-series="advent">Advent</button>
     </div>
     <span class="sermon-count" id="sermonCount"></span>
   </div>
 </div>
 
-<!-- SERMONS -->
-<div class="sermons-wrap">
-
-  <!-- ── ACTS ───────────────────────────────────────────────── -->
-  <div class="series-section" data-series="acts" id="series-acts">
-    <div class="series-header">
-      <h2 class="series-title">Acts</h2>
-      <span class="series-tag">Series</span>
-      <span class="series-count" id="count-acts"></span>
-    </div>
-    <div class="episode-list" id="list-acts"></div>
-  </div>
-
-  <!-- ── PSALMS ─────────────────────────────────────────────── -->
-  <div class="series-section" data-series="psalms" id="series-psalms">
-    <div class="series-header">
-      <h2 class="series-title">Psalms</h2>
-      <span class="series-tag">Series</span>
-      <span class="series-count" id="count-psalms"></span>
-    </div>
-    <div class="episode-list" id="list-psalms"></div>
-  </div>
-
-  <!-- ── GALATIANS ──────────────────────────────────────────── -->
-  <div class="series-section" data-series="galatians" id="series-galatians">
-    <div class="series-header">
-      <h2 class="series-title">Galatians</h2>
-      <span class="series-tag">Series</span>
-      <span class="series-count" id="count-galatians"></span>
-    </div>
-    <div class="episode-list" id="list-galatians"></div>
-  </div>
-
-  <!-- ── ADVENT ─────────────────────────────────────────────── -->
-  <div class="series-section" data-series="advent" id="series-advent">
-    <div class="series-header">
-      <h2 class="series-title">Advent</h2>
-      <span class="series-tag">Series</span>
-      <span class="series-count" id="count-advent"></span>
-    </div>
-    <div class="episode-list" id="list-advent"></div>
-  </div>
-
+<!-- SERMONS — populated from sermons.json -->
+<div class="sermons-wrap" id="sermonsWrap">
+  <p style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm-grey);padding:3rem 0;" id="loadingMsg">Loading sermons…</p>
 </div>
 
 <!-- SPOTIFY STRIP -->
@@ -336,184 +292,50 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
 <script>
 // ─────────────────────────────────────────────────────────────────────────────
-// SERMON DATA
-// To add a new sermon: copy any object below and update the fields.
-// spotifyId: the episode ID from the Spotify URL
-//   e.g. https://open.spotify.com/episode/29pYfTiK1lzQRkHVI6XMvS → "29pYfTiK1lzQRkHVI6XMvS"
-// transcript: paste summary/transcript text, or leave "" for the placeholder
+// CARD BUILDER
 // ─────────────────────────────────────────────────────────────────────────────
-const SERMONS = [
-  {
-    id: "29pYfTiK1lzQRkHVI6XMvS",
-    series: "psalms",
-    title: "Psalm 22: Psalms Jesus Fulfilled and Quoted",
-    preacher: "Pastor Robert McMullan",
-    date: "10 March 2025",
-    duration: "26 min",
-    scripture: "Psalm 22",
-    description: "Exploring how David's words of suffering and trust anticipate the suffering of Christ and find their fulfilment in the promises revealed in the New Testament. Extended: includes baptism testimony.",
-    transcript: ""
-  },
-  {
-    id: "3LKaE03OPaW2v2Bs9HjjQp",
-    series: "acts",
-    title: "Acts 28",
-    preacher: "Pastor Robert McMullan",
-    date: "2 March 2025",
-    duration: "30 min",
-    scripture: "Acts 28",
-    description: "Paul reaches Rome after shipwreck and proclaims the kingdom of God with boldness despite chains. From Malta's kindness to witness in the empire's heart, God's purposes advance and his word remains unhindered.",
-    transcript: ""
-  },
-  {
-    id: "1e1g4k1Pil66YSAvVuTPEp",
-    series: "acts",
-    title: "Acts 27",
-    preacher: "Pastor Robert McMullan",
-    date: "26 February 2025",
-    duration: "24 min",
-    scripture: "Acts 27",
-    description: "Paul's voyage to Rome is overtaken by storm and shipwreck, yet through trial and danger God preserves every life on board, demonstrating his sovereign care amid uncertainty.",
-    transcript: ""
-  },
-  {
-    id: "5zch6UPh40eEGMVZ0oYZ3C",
-    series: "acts",
-    title: "Acts 26",
-    preacher: "Pastor Robert McMullan",
-    date: "18 February 2025",
-    duration: "24 min",
-    scripture: "Acts 26",
-    description: "Paul gives his defence before King Agrippa. He recounts his former life, his encounter with the risen Christ, and his mission to proclaim repentance and resurrection hope to all.",
-    transcript: ""
-  },
-  {
-    id: "2kLkKDfuIPsnzOGCNSAyNQ",
-    series: "acts",
-    title: "Acts 25",
-    preacher: "Pastor Robert McMullan",
-    date: "10 February 2025",
-    duration: "22 min",
-    scripture: "Acts 25",
-    description: "Paul stands before the new governor Festus. Facing renewed accusations, Paul appeals to Caesar, and Festus consults King Agrippa about the case, highlighting the dispute over Jesus' resurrection.",
-    transcript: ""
-  },
-  {
-    id: "3NNJEhbSGNWukINKRoPzsn",
-    series: "acts",
-    title: "Acts 24",
-    preacher: "Pastor Robert McMullan",
-    date: "1 February 2025",
-    duration: "24 min",
-    scripture: "Acts 24",
-    description: "Paul makes his defence before the Roman governor Felix, speaks of faith in Christ and the hope of the resurrection, and remains in custody as the legal process unfolds.",
-    transcript: ""
-  },
-  {
-    id: "0lOfXMD2D4KKtr3g6OJ9P0",
-    series: "psalms",
-    title: "Psalms 42 & 43: Look Up When You Are Down",
-    preacher: "Peter Gobbo",
-    date: "29 January 2025",
-    duration: "17 min",
-    scripture: "Psalms 42–43",
-    description: "Giving voice to deep spiritual longing and distress, while calling God's people to honest lament, renewed hope, and confidence in the Lord who remains their help and their God.",
-    transcript: ""
-  },
-  {
-    id: "0MNkKFVpbgkp6K5EfUR1T6",
-    series: "galatians",
-    title: "Galatians 4:8–31: Slave or Son",
-    preacher: "Patrick Jacob",
-    date: "21 January 2025",
-    duration: "31 min",
-    scripture: "Galatians 4:8–31",
-    description: "Paul contrasts slavery and freedom, urging believers to live as children of promise rather than returning to bondage.",
-    transcript: ""
-  },
-  {
-    id: "7eSMDVjQ5Y4D8Mr2ZagMgY",
-    series: "psalms",
-    title: "Psalm 90",
-    preacher: "Pastor Robert McMullan",
-    date: "12 January 2025",
-    duration: "21 min",
-    scripture: "Psalm 90",
-    description: "Reflecting on the eternal nature of God, the brevity of human life, and the call to live wisely before him.",
-    transcript: ""
-  },
-  {
-    id: "0NbCYUXyuNhBSdgAP5TmnT",
-    series: "psalms",
-    title: "Psalm 104",
-    preacher: "Pastor Robert McMullan",
-    date: "8 January 2025",
-    duration: "26 min",
-    scripture: "Psalm 104",
-    description: "Celebrating God's wisdom and power displayed in creation, and calling his people to praise the Lord who sustains all life.",
-    transcript: ""
-  },
-  {
-    id: "4aA7c52sv9O1bWOJZpIIcW",
-    series: "psalms",
-    title: "Psalm 103: New Year — Thankfulness",
-    preacher: "Pastor Robert McMullan",
-    date: "8 January 2025",
-    duration: "23 min",
-    scripture: "Psalm 103",
-    description: "Calling God's people to remember his mercy, faithfulness, and enduring grace as the new year begins.",
-    transcript: ""
-  },
-  {
-    id: "6JnSXrHcby5qQxyne4ie6x",
-    series: "advent",
-    title: "Advent 4: Love",
-    preacher: "Pastor Robert McMullan",
-    date: "8 January 2025",
-    duration: "11 min",
-    scripture: "Isaiah 60:1–3; John 1:9–14",
-    description: "Reflecting on God's light and love revealed in the coming of Christ into the world.",
-    transcript: ""
-  }
-];
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  if (isNaN(d)) return iso;
+  return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+}
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RENDER
-// ─────────────────────────────────────────────────────────────────────────────
 function buildCard(s) {
   const card = document.createElement('div');
   card.className = 'episode-card';
   card.dataset.series = s.series;
-  card.dataset.id = s.id;
+  card.dataset.id = s.spotifyId;
 
   const hasTranscript = s.transcript && s.transcript.trim().length > 0;
+  const dateLine = [formatDate(s.date), s.scripture].filter(Boolean).join(' · ');
 
   card.innerHTML = `
     <div class="episode-top">
       <div class="episode-meta">
-        <div class="episode-date">${s.date} · ${s.scripture}</div>
+        <div class="episode-date">${dateLine}</div>
         <div class="episode-title">${s.title}</div>
-        <div class="episode-preacher">${s.preacher}</div>
-        <div class="episode-duration">⏱ ${s.duration}</div>
+        <div class="episode-preacher">${s.preacher || ''}</div>
+        ${s.duration ? `<div class="episode-duration">⏱ ${s.duration}</div>` : ''}
       </div>
       <div class="episode-actions">
-        <button class="btn-play" data-id="${s.id}">▶ Listen</button>
-        <button class="btn-transcript" data-id="${s.id}">
-          ${hasTranscript ? '📄 Summary' : '📄 Summary'}
-        </button>
+        ${s.spotifyId ? `<button class="btn-play" data-id="${s.spotifyId}">▶ Listen</button>` : ''}
+        <button class="btn-transcript" data-id="${s.spotifyId || s._rssGuid}">📄 Summary</button>
       </div>
     </div>
-    <p class="episode-desc">${s.description}</p>
-    <div class="episode-player" id="player-${s.id}">
+    <p class="episode-desc">${s.description || ''}</p>
+    <div class="episode-player" id="player-${s.spotifyId}">
       <div class="episode-player-inner"></div>
     </div>
-    <div class="episode-transcript" id="transcript-${s.id}">
+    <div class="episode-transcript" id="transcript-${s.spotifyId || s._rssGuid}">
       <div class="transcript-inner">
         <div class="transcript-label">Sermon Summary</div>
         <div class="transcript-text">
           ${hasTranscript
             ? s.transcript
-            : `<span class="transcript-placeholder">Summary not yet available for this sermon. Check back soon, or <a href="https://open.spotify.com/episode/${s.id}" target="_blank" rel="noopener" style="color:var(--forest)">listen on Spotify</a>.</span>`
+            : `<span class="transcript-placeholder">Summary not yet available for this sermon. Check back soon${s.spotifyId ? `, or <a href="https://open.spotify.com/episode/${s.spotifyId}" target="_blank" rel="noopener" style="color:var(--forest)">listen on Spotify</a>` : ''}.` +
+              (s._rssGuid ? `<br><small style="font-size:0.78rem;opacity:0.6">RSS guid: ${s._rssGuid} — add to sermons.json to tag this episode.</small>` : '') +
+              `</span>`
           }
         </div>
       </div>
@@ -523,50 +345,121 @@ function buildCard(s) {
   return card;
 }
 
-// Populate lists
-const lists = { acts: [], psalms: [], galatians: [], advent: [] };
-SERMONS.forEach(s => { if (lists[s.series]) lists[s.series].push(s); });
+// ─────────────────────────────────────────────────────────────────────────────
+// RSS HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+function parseDuration(raw) {
+  if (!raw) return '';
+  if (raw.includes(':')) {
+    const parts = raw.split(':').map(Number);
+    const mins = parts.length === 3 ? parts[0] * 60 + parts[1] : parts[0];
+    return `${mins} min`;
+  }
+  const secs = parseInt(raw, 10);
+  return isNaN(secs) ? raw : `${Math.round(secs / 60)} min`;
+}
 
-Object.entries(lists).forEach(([series, episodes]) => {
-  const container = document.getElementById(`list-${series}`);
-  const countEl   = document.getElementById(`count-${series}`);
-  if (!container) return;
-  episodes.forEach(s => container.appendChild(buildCard(s)));
-  if (countEl) countEl.textContent = `${episodes.length} sermon${episodes.length !== 1 ? 's' : ''}`;
-});
+function textOf(el, selector) {
+  return el.querySelector(selector)?.textContent?.trim() || '';
+}
 
-updateCount();
+async function fetchRSS(url) {
+  try {
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) return [];
+    const xml = new DOMParser().parseFromString(await res.text(), 'text/xml');
+    return Array.from(xml.querySelectorAll('item')).map(item => {
+      const guid   = textOf(item, 'guid');
+      const link   = textOf(item, 'link') || guid;
+      const match  = link.match(/episode\/([A-Za-z0-9]+)/);
+      const rawDate = textOf(item, 'pubDate');
+      const isoDate = rawDate ? new Date(rawDate).toISOString().slice(0, 10) : '';
+      return {
+        _rssGuid:  guid,
+        spotifyId: match ? match[1] : '',
+        series:    'new',
+        title:     textOf(item, 'title'),
+        preacher:  '',
+        date:      isoDate,
+        duration:  parseDuration(textOf(item, 'itunes\\:duration')),
+        scripture: '',
+        description: (textOf(item, 'itunes\\:summary') || textOf(item, 'description'))
+                       .replace(/<[^>]+>/g, '').trim(),
+        transcript: ''
+      };
+    });
+  } catch {
+    return [];
+  }
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
-// FILTERING
+// RENDER
 // ─────────────────────────────────────────────────────────────────────────────
+function render(seriesConfig, episodes) {
+  const wrap  = document.getElementById('sermonsWrap');
+  const chips = document.getElementById('filterChips');
+
+  // Build chips (keep the existing "All" chip, append series chips)
+  chips.querySelectorAll('.chip:not([data-series="all"])').forEach(c => c.remove());
+  seriesConfig.forEach(s => {
+    if (!episodes.some(e => e.series === s.id)) return;
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.dataset.series = s.id;
+    chip.textContent = s.label;
+    chips.appendChild(chip);
+  });
+
+  // Build series sections
+  wrap.innerHTML = '';
+  seriesConfig.forEach(s => {
+    const group = episodes.filter(e => e.series === s.id);
+    if (!group.length) return;
+    const sec = document.createElement('div');
+    sec.className = 'series-section';
+    sec.dataset.series = s.id;
+    sec.innerHTML = `
+      <div class="series-header">
+        <h2 class="series-title">${s.label}</h2>
+        <span class="series-tag">${s.tag || 'Series'}</span>
+        <span class="series-count">${group.length} sermon${group.length !== 1 ? 's' : ''}</span>
+      </div>
+      <div class="episode-list"></div>
+    `;
+    group.forEach(ep => sec.querySelector('.episode-list').appendChild(buildCard(ep)));
+    wrap.appendChild(sec);
+  });
+
+  updateCount(episodes);
+}
+
+function updateCount(episodes) {
+  const active = document.querySelector('.chip.active')?.dataset.series || 'all';
+  const n = active === 'all' ? episodes.length : episodes.filter(e => e.series === active).length;
+  document.getElementById('sermonCount').textContent = `${n} sermon${n !== 1 ? 's' : ''}`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FILTERING — delegated so it works after render()
+// ─────────────────────────────────────────────────────────────────────────────
+let _allEpisodes = [];
 document.getElementById('filterChips').addEventListener('click', e => {
   const chip = e.target.closest('.chip');
   if (!chip) return;
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   chip.classList.add('active');
   const series = chip.dataset.series;
-
   document.querySelectorAll('.series-section').forEach(sec => {
     sec.classList.toggle('hidden', series !== 'all' && sec.dataset.series !== series);
   });
-
-  updateCount();
+  updateCount(_allEpisodes);
 });
-
-function updateCount() {
-  const activeSeries = document.querySelector('.chip.active')?.dataset.series || 'all';
-  const total = activeSeries === 'all'
-    ? SERMONS.length
-    : SERMONS.filter(s => s.series === activeSeries).length;
-  document.getElementById('sermonCount').textContent = `${total} sermon${total !== 1 ? 's' : ''}`;
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PLAYER TOGGLE — lazy-load Spotify embed on first click
 // ─────────────────────────────────────────────────────────────────────────────
 document.addEventListener('click', e => {
-  // Play button
   const playBtn = e.target.closest('.btn-play');
   if (playBtn) {
     const id = playBtn.dataset.id;
@@ -574,11 +467,11 @@ document.addEventListener('click', e => {
     const inner = playerEl.querySelector('.episode-player-inner');
     const isOpen = playerEl.classList.contains('open');
 
-    // Close all other players first
     document.querySelectorAll('.episode-player.open').forEach(p => {
-      if (p.id !== `player-${id}`) {
+      if (p !== playerEl) {
         p.classList.remove('open');
-        const b = document.querySelector(`.btn-play[data-id="${p.id.replace('player-','')}"]`);
+        const otherId = p.id.replace('player-', '');
+        const b = document.querySelector(`.btn-play[data-id="${otherId}"]`);
         if (b) b.textContent = '▶ Listen';
       }
     });
@@ -587,7 +480,6 @@ document.addEventListener('click', e => {
       playerEl.classList.remove('open');
       playBtn.textContent = '▶ Listen';
     } else {
-      // Lazy-load iframe
       if (!inner.querySelector('iframe')) {
         inner.innerHTML = `<iframe
           src="https://open.spotify.com/embed/episode/${id}?utm_source=generator&theme=0"
@@ -602,7 +494,6 @@ document.addEventListener('click', e => {
     return;
   }
 
-  // Transcript button
   const transcriptBtn = e.target.closest('.btn-transcript');
   if (transcriptBtn) {
     const id = transcriptBtn.dataset.id;
@@ -615,13 +506,58 @@ document.addEventListener('click', e => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// INIT — load JSON, optionally merge RSS
+// ─────────────────────────────────────────────────────────────────────────────
+async function init() {
+  let data;
+  try {
+    const res = await fetch('sermons.json');
+    if (!res.ok) throw new Error(res.status);
+    data = await res.json();
+  } catch (err) {
+    document.getElementById('loadingMsg').textContent = 'Could not load sermons — please try again later.';
+    console.error('sermons.json fetch failed:', err);
+    return;
+  }
+
+  const { series: seriesConfig, episodes: jsonEpisodes, rssUrl } = data;
+
+  // Normalise series config: always include a "new" bucket for RSS episodes
+  const allSeriesConfig = [
+    ...seriesConfig,
+    { id: 'new', label: 'New Episodes', tag: 'Untagged' }
+  ];
+
+  let allEpisodes = [...jsonEpisodes];
+
+  if (rssUrl) {
+    const rssEpisodes = await fetchRSS(rssUrl);
+    if (rssEpisodes.length) {
+      const knownIds   = new Set(jsonEpisodes.map(e => e.spotifyId).filter(Boolean));
+      const knownGuids = new Set(jsonEpisodes.map(e => e._rssGuid).filter(Boolean));
+      const novel = rssEpisodes.filter(e =>
+        !(e.spotifyId && knownIds.has(e.spotifyId)) &&
+        !(e._rssGuid && knownGuids.has(e._rssGuid))
+      );
+      allEpisodes = [...allEpisodes, ...novel];
+    }
+  }
+
+  _allEpisodes = allEpisodes;
+  document.getElementById('loadingMsg')?.remove();
+  render(allSeriesConfig, allEpisodes);
+}
+
+init();
+
+// ─────────────────────────────────────────────────────────────────────────────
 // NAV
 // ─────────────────────────────────────────────────────────────────────────────
 const toggle = document.getElementById('navToggle');
 const links  = document.getElementById('navLinks');
 const overlay = document.getElementById('navOverlay');
-function openMenu() { toggle.classList.add('open'); links.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow='hidden'; }
-function closeMenu() { toggle.classList.remove('open'); links.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow=''; }
+function openMenu()  { toggle.classList.add('open'); links.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeMenu() { toggle.classList.remove('open'); links.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; }
 toggle.addEventListener('click', () => links.classList.contains('open') ? closeMenu() : openMenu());
 overlay.addEventListener('click', closeMenu);
 links.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
