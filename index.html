@@ -1733,6 +1733,73 @@
           padding: 0 1.25rem;
         }
       }
+      /* CHRISTMAS GALA BANNER (seasonal — remove after the event) */
+      .gala-banner {
+        background: var(--forest);
+        padding: 4rem 5rem;
+      }
+      .gala-banner-inner {
+        max-width: 1300px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
+      .gala-banner-graphic {
+        display: block;
+        aspect-ratio: 596/325;
+        border-radius: 2px;
+        overflow: hidden;
+        background: rgba(245, 240, 232, 0.06);
+      }
+      .gala-banner-graphic img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .gala-banner .section-label {
+        color: var(--gold-light);
+      }
+      .gala-banner .section-label::before {
+        background: var(--gold-light);
+      }
+      .gala-banner-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 600;
+        line-height: 1.1;
+        color: var(--cream);
+        margin-bottom: 1rem;
+      }
+      .gala-banner-text {
+        font-size: 1.05rem;
+        color: rgba(245, 240, 232, 0.7);
+        line-height: 1.7;
+        max-width: 42ch;
+        margin-bottom: 1.8rem;
+      }
+      .gala-banner .btn-primary {
+        background: var(--gold);
+      }
+      .gala-banner .btn-primary:hover {
+        background: var(--gold-light);
+      }
+      @media (max-width: 1024px) {
+        .gala-banner {
+          padding: 3.5rem 2rem;
+        }
+        .gala-banner-inner {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+      }
+      @media (max-width: 640px) {
+        .gala-banner {
+          padding: 3rem 1.25rem;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1796,6 +1863,30 @@
             <div class="sub">Two Morning Services</div>
           </div>
           <div class="hero-address">Queanbeyan, NSW 2620</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHRISTMAS GALA BANNER (seasonal — remove after the event) -->
+    <section class="gala-banner">
+      <div class="gala-banner-inner">
+        <a href="christmas-gala.html" class="gala-banner-graphic">
+          <img
+            src="images/christmas-gala-2026.png"
+            alt="You are invited to the Christmas Gala 2026"
+          />
+        </a>
+        <div>
+          <div class="section-label">Special Event · Friday 18 December</div>
+          <h2 class="gala-banner-title">Christmas Gala</h2>
+          <p class="gala-banner-text">
+            A proper Christmas meal, fully catered and served on real
+            crockery. Bring your friends, coworkers and family. Everyone's
+            welcome at the table.<br /><br />
+            Southern Pavilion, Queanbeyan Showground. Tickets $30 per adult,
+            $15 per child with a meal, and free for children without.
+          </p>
+          <a href="christmas-gala.html#tickets" class="btn-primary">Get Tickets</a>
         </div>
       </div>
     </section>
