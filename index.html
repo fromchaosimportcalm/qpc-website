@@ -1733,6 +1733,83 @@
           padding: 0 1.25rem;
         }
       }
+      /* JOINT SERVICE NOTICE (one-off — auto-hides after Sun 15 Nov 2026) */
+      .joint-banner {
+        background: var(--cream-dark);
+        border-bottom: 1px solid var(--border);
+        padding: 4rem 5rem;
+      }
+      .joint-banner-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
+      .joint-banner-graphic {
+        display: block;
+        aspect-ratio: 2/3;
+        border-radius: 2px;
+        overflow: hidden;
+        box-shadow: 0 12px 32px rgba(28, 26, 22, 0.15);
+      }
+      .joint-banner-graphic img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .joint-banner-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 600;
+        line-height: 1.1;
+        color: var(--forest);
+        margin-bottom: 1.25rem;
+      }
+      .joint-banner-when {
+        font-family: "Playfair Display", serif;
+        font-size: 1.3rem;
+        color: var(--ink);
+        margin-bottom: 0.3rem;
+      }
+      .joint-banner-where {
+        font-size: 1.05rem;
+        color: var(--ink);
+        opacity: 0.75;
+        margin-bottom: 1.5rem;
+      }
+      .joint-banner-text {
+        font-size: 1.05rem;
+        color: var(--ink);
+        opacity: 0.8;
+        line-height: 1.7;
+        max-width: 46ch;
+      }
+      .joint-banner-text strong {
+        color: var(--forest);
+      }
+      @media (max-width: 1024px) {
+        .joint-banner {
+          padding: 3.5rem 2rem;
+        }
+        .joint-banner-inner {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        .joint-banner-graphic {
+          max-width: 360px;
+        }
+      }
+      @media (max-width: 640px) {
+        .joint-banner {
+          padding: 3rem 1.25rem;
+        }
+      }
+      .is-hidden {
+        display: none !important;
+      }
       /* CHRISTMAS GALA BANNER (seasonal — remove after the event) */
       .gala-banner {
         background: var(--forest);
@@ -1857,12 +1934,43 @@
       </div>
       <div class="hero-right">
         <div class="hero-image-block">
-          <div class="hero-service-badge">
+          <!-- Joint service variant (one-off — swapped back by script after Sun 15 Nov 2026) -->
+          <a href="#joint-service" class="hero-service-badge joint-service-only" style="display: block; text-decoration: none">
+            <div class="label">This Sunday · Joint Service</div>
+            <div class="times">One service at 10:00 am</div>
+            <div class="sub">Queanbeyan Public School, Isabella St</div>
+          </a>
+          <div class="hero-service-badge regular-service-only is-hidden">
             <div class="label">Join us this Sunday</div>
             <div class="times">9:00 am & 10:45 am</div>
             <div class="sub">Two Morning Services</div>
           </div>
           <div class="hero-address">Queanbeyan, NSW 2620</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOINT SERVICE NOTICE (one-off — auto-hides after Sun 15 Nov 2026) -->
+    <section class="joint-banner joint-service-only" id="joint-service">
+      <div class="joint-banner-inner">
+        <a href="images/joint-service-2026.jpg" class="joint-banner-graphic" target="_blank" rel="noopener">
+          <img
+            src="images/joint-service-2026.jpg"
+            alt="Joint Service Sunday poster: Sunday 15th November at 10am at Queanbeyan Public School, Isabella Street. Kids can dress up as their favourite Bible character. Morning tea and games for the kids after church."
+          />
+        </a>
+        <div>
+          <div class="section-label">This Week · Everyone Warmly Welcome</div>
+          <h2 class="joint-banner-title">Joint Service Sunday</h2>
+          <p class="joint-banner-when">Sunday 15 November · 10:00 am</p>
+          <p class="joint-banner-where">Queanbeyan Public School, Isabella Street</p>
+          <p class="joint-banner-text">
+            This week we're meeting together as one congregation, so there are
+            <strong>no 9:00 am or 10:45 am services</strong>. There's also no
+            Sunday School, but kids are invited to dress up as their favourite
+            Bible character!<br /><br />
+            Stay afterwards for morning tea and games for the kids.
+          </p>
         </div>
       </div>
     </section>
@@ -2371,6 +2479,18 @@
       links
         .querySelectorAll("a")
         .forEach((a) => a.addEventListener("click", closeMenu));
+
+      // ── JOINT SERVICE NOTICE (one-off) ───────────────────────────────────────
+      // Shows the joint-service banner/badge until the end of Sun 15 Nov 2026,
+      // then restores the regular service times. Safe to delete afterwards.
+      if (new Date() >= new Date(2026, 10, 16)) {
+        document
+          .querySelectorAll(".joint-service-only")
+          .forEach((el) => el.classList.add("is-hidden"));
+        document
+          .querySelectorAll(".regular-service-only")
+          .forEach((el) => el.classList.remove("is-hidden"));
+      }
 
       // ── VERSE OF THE DAY ─────────────────────────────────────────────────────
       (async function loadVerse() {
