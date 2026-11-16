@@ -25,7 +25,7 @@ add_action( 'rest_api_init', function () {
 /* ---------- Cache: rebuilt whenever a sermon or series changes ---------- */
 
 function qpc_flush_data_cache() {
-	delete_transient( 'qpc_data_sermons' );
+	delete_transient( 'qpc_data_sermons_v2' );
 }
 add_action( 'save_post_qpc_sermon', 'qpc_flush_data_cache' );
 add_action( 'deleted_post', 'qpc_flush_data_cache' );
@@ -38,7 +38,7 @@ add_action( 'set_object_terms', 'qpc_flush_data_cache' );
 /* ---------- Sermons ---------- */
 
 function qpc_sermon_data() {
-	$cached = get_transient( 'qpc_data_sermons' );
+	$cached = get_transient( 'qpc_data_sermons_v2' );
 	if ( false !== $cached ) {
 		return $cached;
 	}
@@ -66,6 +66,8 @@ function qpc_sermon_data() {
 		$episodes[] = array(
 			'spotifyId'   => get_post_meta( $p->ID, 'qpc_spotify', true ),
 			'audioUrl'    => get_post_meta( $p->ID, 'qpc_audio_url', true ),
+			// Featured image if someone set one, else the podcast's episode art, else the podcast cover.
+			'image'       => get_the_post_thumbnail_url( $p, 'medium' ) ?: ( get_post_meta( $p->ID, 'qpc_image', true ) ?: get_option( 'qpc_podcast_image', '' ) ),
 			'_rssGuid'    => get_post_meta( $p->ID, 'qpc_rss_guid', true ) ?: 'post-' . $p->ID,
 			'series'      => $terms && ! is_wp_error( $terms ) ? $terms[0]->slug : 'new',
 			'title'       => get_the_title( $p ),
@@ -78,17 +80,16 @@ function qpc_sermon_data() {
 		);
 	}
 
-	// Series with the most recent sermon first.
-	$latest = array();
-	foreach ( $episodes as $e ) {
-		$latest[ $e['series'] ] = max( $latest[ $e['series'] ] ?? '', (string) $e['date'] );
-	}
-	usort( $series, function ( $a, $b ) use ( $latest ) {
-		return strcmp( $latest[ $b['id'] ] ?? '', $latest[ $a['id'] ] ?? '' );
+	// Bible books in biblical order (Genesis → Revelation), then any other series A–Z.
+	$book_order = array_flip( array_keys( qpc_bible_books() ) );
+	usort( $series, function ( $a, $b ) use ( $book_order ) {
+		$ia = $book_order[ $a['label'] ] ?? PHP_INT_MAX;
+		$ib = $book_order[ $b['label'] ] ?? PHP_INT_MAX;
+		return $ia === $ib ? strcasecmp( $a['label'], $b['label'] ) : $ia <=> $ib;
 	} );
 
 	$data = array( 'series' => $series, 'episodes' => $episodes );
-	set_transient( 'qpc_data_sermons', $data, DAY_IN_SECONDS );
+	set_transient( 'qpc_data_sermons_v2', $data, DAY_IN_SECONDS );
 	return $data;
 }
 

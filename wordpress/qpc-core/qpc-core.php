@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       QPC Core
  * Description:       Sermons, notices, the church calendar and the homepage verse for Queanbeyan Presbyterian Church. Keep this plugin active — the site's content depends on it, whichever theme is used.
- * Version:           1.0.0
+ * Version:           1.2.1
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            Queanbeyan Presbyterian Church
@@ -12,7 +12,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'QPC_CORE_VERSION', '1.0.0' );
+define( 'QPC_CORE_VERSION', '1.2.1' );
 define( 'QPC_CORE_FILE', __FILE__ );
 define( 'QPC_CORE_DIR', __DIR__ );
 

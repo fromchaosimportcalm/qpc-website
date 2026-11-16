@@ -15,6 +15,7 @@ function qpc_meta_fields() {
 			'qpc_spotify'   => array( 'label' => __( 'Spotify episode', 'qpc' ), 'type' => 'text', 'help' => __( 'Paste the Spotify episode link (Share → Copy link to episode).', 'qpc' ) ),
 			'qpc_duration'  => array( 'label' => __( 'Length', 'qpc' ), 'type' => 'text', 'help' => __( 'e.g. 26 min', 'qpc' ) ),
 			'qpc_audio_url' => array( 'label' => __( 'Audio (MP3 link)', 'qpc' ), 'type' => 'url', 'help' => __( 'Filled in automatically from the podcast. Used when there is no Spotify link.', 'qpc' ) ),
+			'qpc_image'     => array( 'label' => __( 'Episode artwork (image link)', 'qpc' ), 'type' => 'url', 'help' => __( 'Filled in automatically from the podcast. To use a different picture, set a Featured image instead.', 'qpc' ) ),
 			'qpc_rss_guid'  => array( 'label' => __( 'Podcast ID', 'qpc' ), 'type' => 'readonly', 'help' => __( 'Filled in automatically for episodes added from the podcast feed.', 'qpc' ) ),
 		),
 		'qpc_notice' => array(

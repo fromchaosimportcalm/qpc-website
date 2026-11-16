@@ -22,7 +22,7 @@ function qpc_register_content_types() {
 		'rewrite'       => array( 'slug' => 'sermon' ),
 		'menu_icon'     => 'dashicons-microphone',
 		'menu_position' => 5,
-		'supports'      => array( 'title', 'editor', 'excerpt', 'revisions' ),
+		'supports'      => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions' ),
 		'show_in_rest'  => true,
 		'template'      => array( array( 'core/paragraph', array( 'placeholder' => __( 'Optional: sermon summary or transcript. Leave empty if you don\'t have one.', 'qpc' ) ) ) ),
 	) );

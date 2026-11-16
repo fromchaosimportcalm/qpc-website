@@ -208,6 +208,11 @@ function qpc_import_static_pages() {
 			$id = qpc_import_image( $m[2] );
 			return $id ? $m[1] . '="' . esc_url( wp_get_attachment_url( $id ) ) . '"' : $m[0];
 		}, $content );
+		// Links between pages are written as /our-team/ etc. Make them full addresses so
+		// they still work when WordPress lives in a folder (e.g. a staging copy at /new/).
+		$content = preg_replace_callback( '~href="/([^"/][^"]*)?"~', function ( $m ) {
+			return 'href="' . esc_url( home_url( '/' . ( $m[1] ?? '' ) ) ) . '"';
+		}, $content );
 
 		$existing = get_page_by_path( $slug, OBJECT, 'page' );
 		$id       = wp_insert_post( wp_slash( array(

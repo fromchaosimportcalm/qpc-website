@@ -24,11 +24,12 @@
           .join(" · ");
 
         card.innerHTML = `
-    <div class="episode-top">
+    <div class="episode-top${s.image ? " has-art" : ""}">
+      ${s.image ? `<img class="episode-art" src="${s.image}" alt="" loading="lazy" width="96" height="96">` : ""}
       <div class="episode-meta">
         <div class="episode-date">${dateLine}</div>
         <div class="episode-title">${s.title}</div>
-        <div class="episode-preacher">${s.preacher || ""}</div>
+        <div class="episode-preacher">${[s.preacher, _series[s.series] && s.series !== "new" ? _series[s.series].label : ""].filter(Boolean).join(" · ")}</div>
         ${s.duration ? `<div class="episode-duration">⏱ ${s.duration}</div>` : ""}
       </div>
       <div class="episode-actions">
@@ -36,7 +37,6 @@
         <button class="btn-transcript" data-id="${s.spotifyId || s._rssGuid}">📄 Summary</button>
       </div>
     </div>
-    <p class="episode-desc">${s.description || ""}</p>
     <div class="episode-player" id="player-${s.spotifyId || s._rssGuid}">
       <div class="episode-player-inner"></div>
     </div>
@@ -45,13 +45,9 @@
         <div class="transcript-label">Sermon Summary</div>
         <div class="transcript-text">
           ${
-            hasTranscript
-              ? s.transcript
-              : `<span class="transcript-placeholder">Summary not yet available for this sermon. Check back soon${s.spotifyId ? `, or <a href="https://open.spotify.com/episode/${s.spotifyId}" target="_blank" rel="noopener" style="color:var(--forest)">listen on Spotify</a>` : ""}.` +
-                (s._rssGuid
-                  ? `<br><small style="font-size:0.78rem;opacity:0.6">RSS guid: ${s._rssGuid} — add to sermons.json to tag this episode.</small>`
-                  : "") +
-                `</span>`
+            hasTranscript || s.description
+              ? (s.description ? `<p>${s.description}</p>` : "") + (hasTranscript ? s.transcript : "")
+              : `<span class="transcript-placeholder">Summary not yet available for this sermon. Check back soon${s.spotifyId ? `, or <a href="https://open.spotify.com/episode/${s.spotifyId}" target="_blank" rel="noopener" style="color:var(--forest)">listen on Spotify</a>` : ""}.</span>`
           }
         </div>
       </div>
@@ -120,11 +116,16 @@
       // ─────────────────────────────────────────────────────────────────────────────
       // RENDER
       // ─────────────────────────────────────────────────────────────────────────────
+      // One list, newest sermon first. The chips (books in biblical order, then any
+      // other series, then "Other" for untagged sermons) filter that same list.
+      let _series = {};
       function render(seriesConfig, episodes) {
         const wrap = document.getElementById("sermonsWrap");
         const chips = document.getElementById("filterChips");
 
-        // Build chips (keep the existing "All" chip, append series chips)
+        _series = {};
+        seriesConfig.forEach((s) => (_series[s.id] = s));
+
         chips
           .querySelectorAll('.chip:not([data-series="all"])')
           .forEach((c) => c.remove());
@@ -137,46 +138,43 @@
           chips.appendChild(chip);
         });
 
-        // Build series sections
-        wrap.innerHTML = "";
-        seriesConfig.forEach((s) => {
-          const group = episodes.filter((e) => e.series === s.id);
-          if (!group.length) return;
-          const sec = document.createElement("div");
-          sec.className = "series-section";
-          sec.dataset.series = s.id;
-          sec.innerHTML = `
-      <div class="series-header">
-        <h2 class="series-title">${s.label}</h2>
-        <span class="series-tag">${s.tag || "Series"}</span>
-        <span class="series-count">${group.length} sermon${group.length !== 1 ? "s" : ""}</span>
-      </div>
-      <div class="episode-list"></div>
-    `;
-          group.forEach((ep) =>
-            sec.querySelector(".episode-list").appendChild(buildCard(ep)),
-          );
-          wrap.appendChild(sec);
-        });
+        wrap.innerHTML = `
+      <div class="series-section">
+        <div class="series-header">
+          <h2 class="series-title" id="sermonListTitle"></h2>
+          <span class="series-tag" id="sermonListTag"></span>
+          <span class="series-count" id="sermonListCount"></span>
+        </div>
+        <div class="episode-list"></div>
+      </div>`;
+        const list = wrap.querySelector(".episode-list");
+        [...episodes]
+          .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+          .forEach((ep) => list.appendChild(buildCard(ep)));
 
-        updateCount(episodes);
+        applyFilter("all");
       }
 
-      function updateCount(episodes) {
-        const active =
-          document.querySelector(".chip.active")?.dataset.series || "all";
-        const n =
-          active === "all"
-            ? episodes.length
-            : episodes.filter((e) => e.series === active).length;
-        document.getElementById("sermonCount").textContent =
-          `${n} sermon${n !== 1 ? "s" : ""}`;
+      function applyFilter(series) {
+        let n = 0;
+        document.querySelectorAll("#sermonsWrap .episode-card").forEach((card) => {
+          const show = series === "all" || card.dataset.series === series;
+          card.classList.toggle("hidden", !show);
+          if (show) n++;
+        });
+        const s = _series[series];
+        document.getElementById("sermonListTitle").textContent =
+          series === "all" ? "Latest Sermons" : s ? s.label : "";
+        document.getElementById("sermonListTag").textContent =
+          series === "all" ? "Newest first" : (s && s.tag) || "Series";
+        const count = `${n} sermon${n !== 1 ? "s" : ""}`;
+        document.getElementById("sermonListCount").textContent = count;
+        document.getElementById("sermonCount").textContent = count;
       }
 
       // ─────────────────────────────────────────────────────────────────────────────
       // FILTERING — delegated so it works after render()
       // ─────────────────────────────────────────────────────────────────────────────
-      let _allEpisodes = [];
       document.getElementById("filterChips").addEventListener("click", (e) => {
         const chip = e.target.closest(".chip");
         if (!chip) return;
@@ -184,14 +182,7 @@
           .querySelectorAll(".chip")
           .forEach((c) => c.classList.remove("active"));
         chip.classList.add("active");
-        const series = chip.dataset.series;
-        document.querySelectorAll(".series-section").forEach((sec) => {
-          sec.classList.toggle(
-            "hidden",
-            series !== "all" && sec.dataset.series !== series,
-          );
-        });
-        updateCount(_allEpisodes);
+        applyFilter(chip.dataset.series);
       });
 
       // ─────────────────────────────────────────────────────────────────────────────
@@ -269,11 +260,10 @@
 
         const { series: seriesConfig, episodes: jsonEpisodes, rssUrl } = data;
 
-        // Normalise series config: always include a "new" bucket for RSS episodes
-        // Untagged sermons first (they are the newest), then series by most recent sermon.
+        // Untagged sermons (no Bible-book series) are grouped under "Other", last.
         const allSeriesConfig = [
-          { id: "new", label: "New Episodes", tag: "Untagged" },
           ...seriesConfig,
+          { id: "new", label: "Other", tag: "Not in a series" },
         ];
 
         let allEpisodes = [...jsonEpisodes];
@@ -296,7 +286,6 @@
           }
         }
 
-        _allEpisodes = allEpisodes;
         document.getElementById("loadingMsg")?.remove();
         render(allSeriesConfig, allEpisodes);
       }

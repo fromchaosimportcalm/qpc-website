@@ -151,13 +151,27 @@ function qpc_import_sermon_feed() {
 		$known_titles[ qpc_title_key( get_the_title( $id ) ) ] = $id;
 	}
 
+	// Podcast cover art: shown for any episode without its own artwork.
+	$channel_itunes = $xml->channel->children( 'http://www.itunes.com/dtds/podcast-1.0.dtd' );
+	if ( isset( $channel_itunes->image ) ) {
+		update_option( 'qpc_podcast_image', esc_url_raw( (string) $channel_itunes->image->attributes()->href ), false );
+	}
+
 	$added = 0;
 	foreach ( $xml->channel->item as $item ) {
 		$guid = trim( (string) $item->guid );
-		if ( ! $guid || isset( $known_guids[ $guid ] ) ) {
+		if ( ! $guid ) {
 			continue;
 		}
-		$itunes            = $item->children( 'http://www.itunes.com/dtds/podcast-1.0.dtd' );
+		$itunes = $item->children( 'http://www.itunes.com/dtds/podcast-1.0.dtd' );
+		$image  = isset( $itunes->image ) ? esc_url_raw( (string) $itunes->image->attributes()->href ) : '';
+		if ( isset( $known_guids[ $guid ] ) ) {
+			// Already have it: just fill in the episode artwork if it's missing.
+			if ( $image && ! get_post_meta( $known_guids[ $guid ], 'qpc_image', true ) ) {
+				update_post_meta( $known_guids[ $guid ], 'qpc_image', $image );
+			}
+			continue;
+		}
 		list( $title, $by ) = qpc_split_episode_title( (string) $item->title );
 		$audio             = isset( $item->enclosure ) ? (string) $item->enclosure['url'] : '';
 		$date              = (string) $item->pubDate ? wp_date( 'Y-m-d', strtotime( (string) $item->pubDate ) ) : current_time( 'Y-m-d' );
@@ -169,6 +183,9 @@ function qpc_import_sermon_feed() {
 			update_post_meta( $existing, 'qpc_rss_guid', $guid );
 			if ( $audio && ! get_post_meta( $existing, 'qpc_audio_url', true ) ) {
 				update_post_meta( $existing, 'qpc_audio_url', esc_url_raw( $audio ) );
+			}
+			if ( $image && ! get_post_meta( $existing, 'qpc_image', true ) ) {
+				update_post_meta( $existing, 'qpc_image', $image );
 			}
 			$known_guids[ $guid ] = $existing;
 			continue;
@@ -190,6 +207,9 @@ function qpc_import_sermon_feed() {
 		update_post_meta( $id, 'qpc_preacher', $by ?: qpc_setting( 'default_preacher' ) );
 		update_post_meta( $id, 'qpc_duration', qpc_parse_duration( (string) $itunes->duration ) );
 		update_post_meta( $id, 'qpc_audio_url', esc_url_raw( $audio ) );
+		if ( $image ) {
+			update_post_meta( $id, 'qpc_image', $image );
+		}
 		if ( preg_match( '~open\.spotify\.com/episode/([A-Za-z0-9]+)~', (string) $item->link, $m ) ) {
 			update_post_meta( $id, 'qpc_spotify', $m[1] );
 		}
