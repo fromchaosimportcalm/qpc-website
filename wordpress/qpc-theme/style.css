@@ -1,0 +1,13 @@
+/*
+Theme Name:   QPC
+Theme URI:    https://queanbeyanpc.org
+Description:  Theme for Queanbeyan Presbyterian Church. Page content is edited with the standard block editor; ready-made sections are under the "QPC" pattern category in the block inserter. Requires the "QPC Core" plugin for sermons, notices and the calendar.
+Version:      1.0.4
+Requires at least: 6.5
+Requires PHP: 7.4
+Author:       Queanbeyan Presbyterian Church
+License:      GPL-2.0-or-later
+Text Domain:  qpc
+*/
+
+/* Styles live in assets/css/. This file only identifies the theme to WordPress. */

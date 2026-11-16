@@ -1,0 +1,50 @@
+{
+  "$schema": "https://schemas.wp.org/wp/6.5/theme.json",
+  "version": 2,
+  "settings": {
+    "appearanceTools": false,
+    "layout": {},
+    "spacing": {
+      "blockGap": null,
+      "padding": false,
+      "margin": false
+    },
+    "color": {
+      "custom": false,
+      "customGradient": false,
+      "defaultPalette": false,
+      "defaultGradients": false,
+      "defaultDuotone": false,
+      "palette": [
+        { "slug": "cream", "name": "Cream", "color": "#F5F0E8" },
+        { "slug": "cream-dark", "name": "Cream (dark)", "color": "#EDE7D6" },
+        { "slug": "ink", "name": "Ink", "color": "#1C1A16" },
+        { "slug": "forest", "name": "Forest", "color": "#2D4A35" },
+        { "slug": "forest-light", "name": "Forest (light)", "color": "#3D6147" },
+        { "slug": "gold", "name": "Gold", "color": "#B8862A" },
+        { "slug": "gold-light", "name": "Gold (light)", "color": "#D4A445" },
+        { "slug": "rust", "name": "Rust", "color": "#8B4A2A" },
+        { "slug": "warm-grey", "name": "Warm grey", "color": "#8A8278" }
+      ]
+    },
+    "typography": {
+      "customFontSize": false,
+      "defaultFontSizes": false,
+      "dropCap": false,
+      "fontFamilies": [
+        { "slug": "serif", "name": "Crimson Pro", "fontFamily": "'Crimson Pro', Georgia, serif" },
+        { "slug": "display", "name": "Playfair Display", "fontFamily": "'Playfair Display', serif" },
+        { "slug": "mono", "name": "DM Mono", "fontFamily": "'DM Mono', monospace" }
+      ],
+      "fontSizes": [
+        { "slug": "small", "name": "Small", "size": "0.9rem" },
+        { "slug": "medium", "name": "Normal", "size": "1rem" },
+        { "slug": "large", "name": "Large", "size": "1.25rem" }
+      ]
+    }
+  },
+  "styles": {
+    "color": { "background": "var(--wp--preset--color--cream)", "text": "var(--wp--preset--color--ink)" },
+    "typography": { "fontFamily": "var(--wp--preset--font-family--serif)" }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "qpc/calendar",
+  "title": "Church Calendar",
+  "category": "widgets",
+  "icon": "calendar-alt",
+  "description": "Month view and upcoming events from the church calendar. The calendar link is set in Settings → Church Site.",
+  "textdomain": "qpc",
+  "supports": {
+    "html": false,
+    "multiple": false,
+    "reusable": false
+  },
+  "render": "file:./render.php"
+}
