@@ -1,0 +1,10 @@
+/* Editor-only adjustments so pages look like the live site while editing. */
+
+/* The noise overlay sits above everything on the site; hide it in the editor. */
+body::before{display:none;}
+
+/* No fixed nav in the editor, so the page header doesn't need the extra top padding. */
+.page-header{padding-top:5rem;}
+
+/* Make it obvious where one full-width section ends and the next begins. */
+.is-root-container > .wp-block-group:hover{outline:1px dashed rgba(184,134,42,0.5);}

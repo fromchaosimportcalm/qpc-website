@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "qpc/verse-of-the-day",
+  "title": "Verse of the Day",
+  "category": "widgets",
+  "icon": "book",
+  "description": "A different Bible verse each day.",
+  "textdomain": "qpc",
+  "supports": {
+    "html": false,
+    "multiple": false,
+    "reusable": false
+  },
+  "render": "file:./render.php"
+}

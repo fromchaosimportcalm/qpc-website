@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "qpc/sermon-library",
+  "title": "Sermon Library",
+  "category": "widgets",
+  "icon": "microphone",
+  "description": "All sermons, grouped by series, with Listen and Summary buttons. Sermons are managed under Sermons in the admin menu.",
+  "textdomain": "qpc",
+  "supports": {
+    "html": false,
+    "multiple": false,
+    "reusable": false
+  },
+  "render": "file:./render.php"
+}

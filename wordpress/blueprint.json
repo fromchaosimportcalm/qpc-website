@@ -1,0 +1,15 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/",
+  "preferredVersions": { "php": "8.2", "wp": "latest" },
+  "features": { "networking": true },
+  "login": true,
+  "steps": [
+    { "step": "activatePlugin", "pluginPath": "qpc-core/qpc-core.php" },
+    { "step": "activateTheme", "themeFolderName": "qpc" },
+    {
+      "step": "runPHP",
+      "code": "<?php require '/wordpress/wp-load.php'; $log = qpc_run_import(); file_put_contents('/wordpress/wp-content/qpc-import-log.txt', implode(\"\\n\", $log));"
+    }
+  ]
+}

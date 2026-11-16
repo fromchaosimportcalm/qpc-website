@@ -1,0 +1,16 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "qpc/notices",
+  "title": "Notices",
+  "category": "widgets",
+  "icon": "megaphone",
+  "description": "Shows any current Notices (homepage banners). Add or edit them under Notices in the admin menu.",
+  "textdomain": "qpc",
+  "supports": {
+    "html": false,
+    "multiple": false,
+    "reusable": false
+  },
+  "render": "file:./render.php"
+}
