@@ -35,3 +35,7 @@
 }
 .qpc-page-sermons .transcript-text p{margin:0 0 1em;}
 .qpc-page-sermons .transcript-text p:last-child{margin-bottom:0;}
+
+/* Our History timeline: visible by default; fade-in only once reveal.js is running */
+.qpc-page-our-history .timeline-event{opacity:1;transform:none;}
+body.reveal-ready.qpc-page-our-history .timeline-event:not(.visible){opacity:0;transform:translateY(20px);}

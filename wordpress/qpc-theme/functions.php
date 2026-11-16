@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'QPC_THEME_VERSION', '1.0.3' );
+define( 'QPC_THEME_VERSION', '1.0.4' );
 
 require_once __DIR__ . '/inc/customizer.php';
 
@@ -57,6 +57,7 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'qpc-fixes', get_theme_file_uri( 'assets/css/fixes.css' ), array( 'qpc-base' ), QPC_THEME_VERSION );
 
 	wp_enqueue_script( 'qpc-nav', get_theme_file_uri( 'assets/js/nav.js' ), array(), QPC_THEME_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
+	wp_enqueue_script( 'qpc-reveal', get_theme_file_uri( 'assets/js/reveal.js' ), array(), QPC_THEME_VERSION, array( 'in_footer' => true, 'strategy' => 'defer' ) );
 } );
 
 /** Pattern category so the church's sections are easy to find in the inserter. */
