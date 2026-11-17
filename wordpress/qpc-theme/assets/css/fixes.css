@@ -39,3 +39,7 @@
 /* Our History timeline: visible by default; fade-in only once reveal.js is running */
 .qpc-page-our-history .timeline-event{opacity:1;transform:none;}
 body.reveal-ready.qpc-page-our-history .timeline-event:not(.visible){opacity:0;transform:translateY(20px);}
+
+/* Mobile menu: the panel lives inside .site-nav (z-index 100), so the dark
+   overlay must sit below the nav bar or it covers the links. */
+.nav-overlay{z-index:99;}

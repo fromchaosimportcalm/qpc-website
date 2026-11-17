@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'QPC_THEME_VERSION', '1.0.4' );
+define( 'QPC_THEME_VERSION', '1.0.5' );
 
 require_once __DIR__ . '/inc/customizer.php';
 

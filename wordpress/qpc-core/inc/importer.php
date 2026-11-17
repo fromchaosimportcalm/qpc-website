@@ -168,7 +168,14 @@ function qpc_import_image( $rel ) {
 		$tmp = wp_tempnam( basename( $rel ) );
 		copy( $local, $tmp );
 	} else {
-		$tmp = download_url( QPC_IMPORT_IMAGE_BASE . str_replace( '%2F', '/', rawurlencode( $rel ) ), 60 );
+		// The old site first; if it has already been replaced, the copy in the Git repo.
+		$path = str_replace( '%2F', '/', rawurlencode( $rel ) );
+		foreach ( array( QPC_IMPORT_IMAGE_BASE, 'https://raw.githubusercontent.com/fromchaosimportcalm/qpc-website/main/' ) as $base ) {
+			$tmp = download_url( $base . $path, 60 );
+			if ( ! is_wp_error( $tmp ) ) {
+				break;
+			}
+		}
 		if ( is_wp_error( $tmp ) ) {
 			return 0;
 		}
