@@ -283,8 +283,15 @@ function makeCell(day, currentMonth, isToday, events) {
 // ─────────────────────────────────────────────────────────────────────────────
 function renderUpcoming() {
   const list = document.getElementById('upcomingList');
-  const now = new Date(); now.setHours(0,0,0,0);
-  const upcoming = allEvents.filter(ev => ev.start >= now).slice(0, 8);
+  // Hide events that have already finished; ones under way show "On now".
+  const now = new Date();
+  const finish = ev => {
+    if (ev.end) return ev.end;
+    const d = new Date(ev.start);
+    if (ev.allDay) d.setDate(d.getDate() + 1); else d.setHours(d.getHours() + 1);
+    return d;
+  };
+  const upcoming = allEvents.filter(ev => finish(ev) > now).slice(0, 8);
 
   if (upcoming.length === 0) {
     list.innerHTML = '<p style="font-size:0.9rem;color:var(--warm-grey);">No upcoming events found.</p>';
@@ -298,7 +305,7 @@ function renderUpcoming() {
     item.innerHTML = `
       <div class="event-item-date">${fmtDate(ev.start, {weekday:'short',day:'numeric',month:'short'})}</div>
       <div class="event-item-title">${ev.title}</div>
-      <div class="event-item-time">${ev.allDay ? 'All day' : fmtTime(ev.start)}${ev.location ? ' · ' + ev.location : ''}</div>
+      <div class="event-item-time">${ev.allDay ? 'All day' : (ev.start <= now ? 'On now' : fmtTime(ev.start))}${ev.location ? ' · ' + ev.location : ''}</div>
     `;
     item.addEventListener('click', () => showDetail(ev));
     list.appendChild(item);
